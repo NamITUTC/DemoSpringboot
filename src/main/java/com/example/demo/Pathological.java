@@ -3,18 +3,27 @@ package com.example.demo;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "Pathological")
-@Table(name = "pathological")
+@Entity(name = "pathological")
 public class Pathological implements Serializable{
 
     @Id
     @Column(name = "id")
-
     private int id;
     @Column(name = "title")
     private String title;
     @Column(name="detail")
     private String detail;
+    @ManyToOne
+    @JoinColumn(name = "idp")
+    private Disease disease;
+
+    public Disease getDisease() {
+        return new Disease();
+    }
+
+    public void setDisease(Disease disease) {
+        this.disease = disease;
+    }
 
     public Pathological(int id, String title, String detail) {
         this.id = id;

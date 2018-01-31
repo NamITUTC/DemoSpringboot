@@ -14,6 +14,10 @@ public class Controller {
 
     @Autowired
     PathologicalService pathologicalService;
+
+    @Autowired
+    DiseaseService diseaseService;
+
     @RequestMapping("/hello")
     public String sayHello() {
         return "hello";
@@ -22,14 +26,22 @@ public class Controller {
     @GetMapping("/pathological")
     public String getAll() {
         List<Pathological> list = pathologicalService.getAll();
-        Gson gson=new Gson();
+        Gson gson = new Gson();
         return gson.toJson(list);
     }
-
-    @GetMapping("/id")
+/*
+    @GetMapping("/name")
     public String getAllID() {
-        Iterable<Integer> list = pathologicalService.getAll2();
+        Iterable<String> list = pathologicalService.getAll2();
         Gson gson=new Gson();
+        return gson.toJson(list);
+    }*/
+
+
+    @GetMapping("/disease")
+    public String getDisease() {
+        Iterable<Disease> list = diseaseService.findAll();
+        Gson gson = new Gson();
         return gson.toJson(list);
     }
 }

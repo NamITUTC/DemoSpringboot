@@ -1,20 +1,18 @@
 package com.example.demo;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "disease")
 public class Disease implements Serializable{
     @Id
+    @Column(name = "id")
     private  int idD;
     private String name;
     private String infor;
-    @OneToMany
-    @JoinColumn(name = "id")
     private String idp;
+
 
     public Disease(int id, String name, String infor, String idp) {
         this.idD = id;
