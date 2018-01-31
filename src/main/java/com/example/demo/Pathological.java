@@ -13,17 +13,23 @@ public class Pathological implements Serializable{
     private String title;
     @Column(name="detail")
     private String detail;
-    @ManyToOne
-    @JoinColumn(name = "idp")
-    private Disease disease;
 
-    public Disease getDisease() {
-        return new Disease();
+   // private Disease disease;
+
+ /*   @ManyToOne
+    @JoinColumn(name="id")*/
+   /* public Disease getDisease() {
+        return disease;
     }
+
+
+
+
+
 
     public void setDisease(Disease disease) {
         this.disease = disease;
-    }
+    }*/
 
     public Pathological(int id, String title, String detail) {
         this.id = id;

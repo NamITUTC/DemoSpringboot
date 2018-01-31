@@ -21,8 +21,14 @@ public class PathologicalService {
         return pathologicals;
     }
 
-    /*public Iterable<String> getAll2() {
-        return responsitory.find();
-    }*/
+
+    /* public Iterable<String> getAll2() {
+         return responsitory.find();
+
+     }*/
+    public Pathological getDataFromId(int id) {
+        return responsitory.findOne(id);
+
+    }
 
 }
