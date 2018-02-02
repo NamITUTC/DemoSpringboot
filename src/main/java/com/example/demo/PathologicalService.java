@@ -31,4 +31,26 @@ public class PathologicalService {
 
     }
 
+    public Pathological updatePathological(int id, Pathological pathological) {
+        Pathological pathological1 = responsitory.findOne(id);
+        pathological1.setDetail(pathological.getDetail());
+        pathological1.setTitle(pathological.getTitle());
+        responsitory.save(pathological1);
+        return pathological1;
+
+    }
+
+    public String deletePathological(int id) {
+        if(responsitory.findOne(id)!=null){
+            responsitory.delete(id);
+
+            return "done";
+        }
+        return "delete fail";
+    }
+
+    public String addPathological(Pathological pathological) {
+        responsitory.save(pathological);
+        return "done";
+    }
 }

@@ -1,18 +1,24 @@
 package com.example.demo;
 
+import com.example.demo.Jsoupparser.Drug;
+import com.example.demo.Jsoupparser.HealthTip;
+import com.example.demo.Jsoupparser.Parser;
 import com.google.gson.Gson;
-import org.hibernate.annotations.Parameter;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class Controller {
+public class Controller implements InitializingBean {
 
     @Autowired
     PathologicalService pathologicalService;
+    ArrayList<Drug> drugs = new ArrayList<>();
+    ArrayList<Drug> drugs2 = new ArrayList<>();
+    ArrayList<HealthTip> healthTips = new ArrayList<>();
 
   /*  @Autowired
     DiseaseService diseaseService;*/
@@ -22,28 +28,72 @@ public class Controller {
         return "hello";
     }
 
-    @GetMapping("/pathological")
+    @GetMapping("/get")
     public String getAll() {
         List<Pathological> list = pathologicalService.getAll();
+
         Gson gson = new Gson();
+        System.out.println(gson.toJson(list));
         return gson.toJson(list);
     }
-    @GetMapping("/id")
-    //localhost:asdf/id?id=1
-    public String getData(@RequestParam("id") int id){
-        Gson gson=new Gson();
+
+    /*@PostMapping("/post")
+    public String getData2(@RequestParam("j") int id, @RequestParam("i") int title) {
+        Gson gson = new Gson();
         return gson.toJson(pathologicalService.getDataFromId(id));
     }
-    @PostMapping("/id2")
-    public  String getData2(@RequestParam("j") int id,@RequestParam("i") int title){
-        Gson gson=new Gson();
-        return gson.toJson(pathologicalService.getDataFromId(id));
+*/
+
+    @PostMapping("/post")
+    public String addData(@RequestBody Pathological pathological) {
+        System.out.println("DATA POST : (" + pathological.getId() + "," + pathological.getTitle() + "," + pathological.getDetail() + ")");
+        Gson gson = new Gson();
+        System.out.println(pathologicalService.addPathological(pathological));
+        return gson.toJson(pathologicalService.addPathological(pathological));
     }
-    @PutMapping("/{id3}")
-    public  String get(@PathVariable("id3") int id){
-//        int a=Integer.parseInt(id);
-        Gson gson=new Gson();
-        return gson.toJson(pathologicalService.getDataFromId(id));
+
+    @PutMapping("/put/{id}")
+    public String update(@PathVariable("id") int id, @RequestBody Pathological pathological) {
+        System.out.println("ID PUT : " + id + "");
+        Gson gson = new Gson();
+        System.out.println(pathologicalService.updatePathological(id, pathological));
+        return gson.toJson(pathologicalService.updatePathological(id, pathological));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deletePathological(@PathVariable("id") int id) {
+        System.out.println("ID DELETE : " + id + "");
+        System.out.println(pathologicalService.deletePathological(id));
+        return pathologicalService.deletePathological(id);
+    }
+
+    @RequestMapping("/drugs")
+    public String getAllDrugs() {
+        Gson gson = new Gson();
+        return gson.toJson(drugs);
+    }
+
+    @RequestMapping("/drug2")
+    public String getDrung2() {
+        Gson gson = new Gson();
+        return gson.toJson(drugs2);
+    }
+
+    @GetMapping("/healthTips")
+    public String gethealthTips() {
+        System.out.println(healthTips.size());
+        Gson gson = new Gson();
+        return gson.toJson(healthTips);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Parser pathologicalParser = new Parser("https://www.dieutri.vn/benhly");
+        drugs = pathologicalParser.getData1();
+        Parser pathologicalParser2 = new Parser("https://www.dieutri.vn/hohap");
+        drugs2 = pathologicalParser2.getData2();
+        Parser healthTipParser = new Parser("https://ameovat.com/cate/suc-khoe-doi-song");
+        healthTips = healthTipParser.getHealthy();
     }
   /*  @GetMapping("/name")
     public String getAllID() {
