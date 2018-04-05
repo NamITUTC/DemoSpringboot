@@ -4,6 +4,7 @@ import com.example.demo.Jsoupparser.Drug;
 import com.example.demo.Jsoupparser.HealthTip;
 import com.example.demo.Jsoupparser.Parser;
 import com.google.gson.Gson;
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -73,14 +74,16 @@ public class Controller implements InitializingBean {
         return gson.toJson(drugs);
     }
 
-    @RequestMapping("/drug2")
-    public String getDrung2() {
+    @PostMapping("/drug2")
+    public String getDrug2(@RequestParam("link") String link) {
+        Parser pathologicalParser2 = new Parser(link);
+        drugs2 = pathologicalParser2.getData2();
         Gson gson = new Gson();
         return gson.toJson(drugs2);
     }
 
     @GetMapping("/healthTips")
-    public String gethealthTips() {
+    public String getHealthTips() {
         System.out.println(healthTips.size());
         Gson gson = new Gson();
         return gson.toJson(healthTips);
@@ -90,23 +93,9 @@ public class Controller implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         Parser pathologicalParser = new Parser("https://www.dieutri.vn/benhly");
         drugs = pathologicalParser.getData1();
-        Parser pathologicalParser2 = new Parser("https://www.dieutri.vn/hohap");
-        drugs2 = pathologicalParser2.getData2();
+
         Parser healthTipParser = new Parser("https://ameovat.com/cate/suc-khoe-doi-song");
         healthTips = healthTipParser.getHealthy();
     }
-  /*  @GetMapping("/name")
-    public String getAllID() {
-        Iterable<String> list = pathologicalService.getAll2();
-        Gson gson=new Gson();
-        return gson.toJson(list);
-    }*/
 
-/*
-    @GetMapping("/disease")
-    public String getDisease() {
-        Iterable<Disease> list = diseaseService.findAll();
-        Gson gson = new Gson();
-        return gson.toJson(list);
-    }*/
 }
