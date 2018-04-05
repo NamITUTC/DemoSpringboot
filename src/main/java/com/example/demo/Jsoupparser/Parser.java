@@ -23,7 +23,7 @@ public class Parser {
 
     public ArrayList<Drug> getData1() {
         ArrayList<Drug> drugs = new ArrayList<>();
-        Elements elementColor = document.select("h2.modcolor");
+        Elements elementColor = document.select("h2.color-red");
         Elements elementsNew = document.select("div.des-news");
         for (int i = 0; i < elementColor.size(); i++) {
             String title = elementColor.get(i).select("a").text();
@@ -38,12 +38,13 @@ public class Parser {
     public ArrayList<Drug> getData2() {
         ArrayList<Drug> drugs = new ArrayList<>();
         Elements elementItemNew = document.select("div.item-news");
+        Elements elementColor = document.select("h2.color-red");
         for (int i = 0; i < elementItemNew.size(); i++) {
             Element element = elementItemNew.get(i);
-          // String link = "https://www.dieutri.vn" + element.select("a").attr("href");
-            String title=element.select("a").text();
+           String link = "https://www.dieutri.vn" + elementColor.get(i).select("a").attr("href");
+            String title=elementColor.get(i).select("a").text();
             String content = element.select("p").text();
-            Drug drug = new Drug(title, content);
+            Drug drug = new Drug(title, content,link);
             drugs.add(drug);
         }
         return drugs;
